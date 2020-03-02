@@ -78,15 +78,19 @@ app.get('/:id', (req, res) => {
 
 app.get('/monitor/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM ip WHERE id = '${id}'`;
+  let sql = `SELECT * FROM links WHERE admin_id = '${id}'`;
+  let sql2 = `SELECT * FROM ip WHERE id = '${id}'`;
 
-  let info = "";
+
   connection.query(sql, (err, results, fields) => {
-    results.forEach((item, i) => {
-      info = info + item
-    });
-    res.send(info);
+    console.log(results);
   });
+
+  connection.query(sql2, (err, results, fields) => {
+    console.log(results);
+  });
+  
+  res.render('monitor');
 });
 
 app.post('/create', (req, res) => {
@@ -111,10 +115,9 @@ app.post('/create', (req, res) => {
   connection.query(sql, (err) => {
     if (err) {
       console.log('Database error: ', err);
-      res.json({message: 'Error, could not create logger'});
+      res.sendStatus(503);
     } else {
       res.json({
-        message: "Logger created successfully",
         id: id,
         admin_id: admin_id,
         original_url: original_url,
