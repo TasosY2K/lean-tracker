@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS ip (
+  id VARCHAR(14) NOT NULL,
+  ip_address VARCHAR(255) NOT NULL,
+  time_captured VARCHAR(255) NOT NULL,
+  user_agent VARCHAR(255) NOT NULL
+)
