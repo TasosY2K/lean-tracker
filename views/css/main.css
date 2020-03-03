@@ -1,4 +1,4 @@
-.btn:focus,.btn:active {
+.btn:focus,.btn:active,.form-control:focus,.form-control:active {
    outline: none !important;
    box-shadow: none;
 }
