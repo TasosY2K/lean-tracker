@@ -6,8 +6,20 @@
     include head.pug
   </head>
   <body>
-    <h1>Welcome To Grabify Clone</h1>
-    <input type="text" id="original_url">
-    <button type="submit" id="submit_btn">Create IP tracker</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-md">
+          <h1>Welcome To Grabify Clone</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md input-group">
+          <input class="form-control" type="text" id="original_url" placeholder="Enter a website URL and create a tracker">
+          <div class="input-group-append">
+            <button class="btn btn-info" type="submit" id="submit_btn">Create IP tracker</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

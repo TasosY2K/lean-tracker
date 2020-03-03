@@ -13,30 +13,14 @@ let app = express();
 app.set('view engine', 'pug');
 
 connection.query('CREATE DATABASE IF NOT EXISTS grabify_clone', (err) => {
-  if (err) {
-    console.log('Database error: ', err);
-    func.shutdown();
-  } else {
-    console.log('Database grabify_clone created successfully!');
-  }
   connection.query('USE grabify_clone', (err) => {
-    if (err) {
-      console.log('Database error: ', err);
-      func.shutdown();
-    }
-    connection.query(func.readSql('./sql/create_table_links.sql'), (err) => {
-      if (err) {
-        console.log('Database error: ', err);
-        func.shutdown();
-      } else {
-        console.log('Table links created successfully!');
-      }
+    connection.query(func.readSql('./sql/create_table_tracker.sql'), (err) => {
       connection.query(func.readSql('./sql/create_table_ip.sql'), (err) => {
         if (err) {
           console.log('Database error: ', err);
           func.shutdown();
         } else {
-          console.log('Table ip created successfully!');
+          console.log('Database setup completed successfully!');
         }
       });
     });
@@ -48,14 +32,18 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:id', (req, res) => {
+
   let id = req.params.id;
-  let sql = `SELECT * FROM links WHERE id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+
     if (results.length > 0) {
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss Z');
-      let original_url = results[0].original_url;
+
       let id = results[0].id;
+      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss Z');
+      let useragent = req.headers['user-agent'];
+
       sql = `INSERT INTO ip (
         id,
         ip_address,
@@ -65,11 +53,15 @@ app.get('/:id', (req, res) => {
         '${id}',
         '${req.ip}',
         '${timestamp}',
-        '${req.headers['user-agent']}'
+        '${useragent}'
       )`;
+
+      let original_url = results[0].original_url;
+
       connection.query(sql, (err) => {
         res.redirect(original_url);
       });
+      
     } else {
       res.redirect('/');
     }
@@ -78,7 +70,7 @@ app.get('/:id', (req, res) => {
 
 app.get('/monitor/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM links WHERE admin_id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
   let sql2 = `SELECT * FROM ip WHERE id = '${id}'`;
 
 
@@ -89,7 +81,7 @@ app.get('/monitor/:id', (req, res) => {
   connection.query(sql2, (err, results, fields) => {
     console.log(results);
   });
-  
+
   res.render('monitor');
 });
 
@@ -98,7 +90,7 @@ app.post('/create', (req, res) => {
   id = shortid.generate();
   admin_id = shortid.generate();
 
-  sql = `INSERT INTO links (
+  sql = `INSERT INTO tracker (
     id,
     admin_id,
     original_url,
