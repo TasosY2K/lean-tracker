@@ -35,10 +35,6 @@ body {
   border-left-width: 0px;
 }
 
-#original_url:focus {
-  border-color: #17a2b8;
-}
-
 #submit_btn {
   border-radius: 30px;
 }
@@ -52,8 +48,27 @@ body {
   border-radius: 30px;
 }
 
-.modal {
-  border-color: transparent !important;
+#delete_btn {
+  background-color: transparent;
+  border-color: #000;
+  border-radius: 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+}
+
+.modal-content {
+  padding: 15px;
+  border-color: transparent;
+  border-radius: 30px;
+}
+
+.modal-header {
+  border-color: transparent;
+}
+
+.modal-footer {
+  border-color: transparent;
 }
 
 .alert-danger {
@@ -112,5 +127,11 @@ body {
   }
   .main-header {
     font-size: 9vw;
+  }
+  .modal-dialog {
+    top: calc(100% - 500px);
+  }
+  .modal-title {
+    font-size: 1rem;
   }
 }

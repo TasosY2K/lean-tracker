@@ -24,6 +24,11 @@ function validateUrl(value) {
 
 $(document).ready(() => {
 
+  $('#delete_btn').click(() => {
+    $("#original_url").val("");
+    checkURL();
+  });
+
   $('#submit_btn').click(() => {
     let url = $("#original_url").val();
     if (validateUrl(url)) {

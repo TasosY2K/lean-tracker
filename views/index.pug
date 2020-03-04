@@ -14,7 +14,12 @@
       </div>
       <div class="row">
         <div class="col-md-9">
-          <input class="form-control" type="text" id="original_url" autocomplete="off" oninput="checkURL()" placeholder="Enter a website URL and create a tracker">
+          <div class="input-group">
+            <input class="form-control" type="text" id="original_url" autocomplete="off" oninput="checkURL()" placeholder="Enter a website URL and create a tracker">
+            <div class="input-group-append">
+              <button class="btn" id="delete_btn" type="button">❌</button>
+            </div>
+          </div>
         </div>
         <div class="col-md-3">
           <div class="row">
@@ -39,7 +44,7 @@
           </div>
           <div class="modal-body" id="modal-body"></div>
           <div class="modal-footer">
-            <a id="popup_btn" href="/" type="button" class="btn btn-info">Check out yo tracker 📡</a>
+            <a id="popup_btn" href="/" type="button" class="btn btn-info" target="_blank">Check out yo tracker 📡</a>
           </div>
         </div>
       </div>
