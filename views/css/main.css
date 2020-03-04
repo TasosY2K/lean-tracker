@@ -7,7 +7,7 @@ input[type="text"]:read-only {
   background: transparent;
 }
 
-table, th, td {
+table, table-sm, th, td {
   border-color: #000 !important;
   vertical-align: baseline !important;
 }
@@ -140,9 +140,6 @@ body {
   }
   .main-header {
     font-size: 9vw;
-  }
-  .modal-dialog {
-    top: calc(100% - 500px);
   }
   .modal-title {
     font-size: 1rem;

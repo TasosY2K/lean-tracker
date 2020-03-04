@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <title>Lean Tracker</title>
     include head.pug
+    script
+      include ./js/monitor.js
   </head>
   <body>
     <div class="container">
       <div class="row">
-        <h1 class="mt-3">Tracker info</h1>
+        <p class="mt-3" style="font-size: 2.4em; margin-bottom: 0">Tracker Info 📡</p>
         <div class="input-group mt-1">
           <div class="input-group-prepend">
             <span class="input-group-text inpt-group-span">Link ID</span>
@@ -50,7 +52,7 @@
           span= ip_info.length
         </p>
       </div>
-    <table class="table">
+    <table class="" id="main_table" style="width: 100%">
       <thead>
         <tr>
           <th>Capture ID</th>
@@ -66,14 +68,14 @@
             td= val.ip_address
             td= val.time_captured
             <td>
-              button(class="btn btn-info more_btn" onclick="show_info('" + val.unique_id + "')") More 📈
+              button(class="btn btn-info more_btn" onclick="show_info('" + val.unique_id + "')") More&nbsp;📈
             </td>
           </tr>
       </tbody>
     </table>
     </div>
     <div class="modal fade">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Full Information 📈</h5>

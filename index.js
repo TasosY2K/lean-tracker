@@ -41,7 +41,7 @@ app.get('/:id', (req, res) => {
 
       let id = results[0].id;
       let unique_id = shortid.generate();
-      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss Z');
+      let timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
       let useragent = req.headers['user-agent'];
 
       sql = `INSERT INTO ip (
