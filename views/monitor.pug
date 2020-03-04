@@ -56,7 +56,6 @@
           <th>Capture ID</th>
           <th>IP address</th>
           <th>Time Captured</th>
-          <th>User Agent</th>
           <th>Extra</th>
         </tr>
       </thead>
@@ -66,13 +65,25 @@
             td= val.unique_id
             td= val.ip_address
             td= val.time_captured
-            td= val.user_agent
             <td>
-              button(class="btn btn-info more_btn")
+              button(class="btn btn-info more_btn" onclick="show_info('" + val.unique_id + "')") More 📈
             </td>
           </tr>
       </tbody>
     </table>
+    </div>
+    <div class="modal fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Full Information 📈</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>❌</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-body"></div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

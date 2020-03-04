@@ -9,6 +9,7 @@ input[type="text"]:read-only {
 
 table, th, td {
   border-color: #000 !important;
+  vertical-align: baseline !important;
 }
 
 body {

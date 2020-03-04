@@ -22,9 +22,40 @@ function validateUrl(value) {
   return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value);
 }
 
-$(document).ready(() => {
+function show_info(unique_id) {
+  $.ajax({
+    type: 'GET',
+    url: '/ip/' + unique_id,
+    success : (response) => {
+      console.log(response);
+      $('#modal-body').html(`
+        <table class="table">
+          <tbody>
+              <tr>
+                <td>Capture ID</td>
+                <td>${response.unique_id}</td>
+              <tr>
+              <tr>
+                <td>IP address</td>
+                <td>${response.ip_address}</td>
+              </tr>
+              <tr>
+                <td>Time Captured</td>
+                <td>${response.time_captured}</td>
+              </tr>
+              <tr>
+                <td>User Agent</td>
+                <td>${response.user_agent}</td>
+              </tr>
+          </tbody>
+        </table>
+        `);
+      $('.modal').modal('show');
+    }
+  });
+}
 
-  $('.more_btn').html('More 📈');
+$(document).ready(() => {
 
   $('#delete_btn').click(() => {
     $("#original_url").val("");
