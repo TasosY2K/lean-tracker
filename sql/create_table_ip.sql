@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS ip (
   ip_address VARCHAR(255) NOT NULL,
   time_captured VARCHAR(255) NOT NULL,
   user_agent VARCHAR(255) NOT NULL,
-  PRIMARY KEY (Personid)
+  PRIMARY KEY (number_id)
 )
