@@ -9,17 +9,22 @@
     <div class="container center">
       <div class="row text-center">
         <div class="col-md">
-          <h1 class="display-1 main-header">Lean Tracker</h1>
+          <h1 class="display-1 main-header">Lean Tracker 🛰️</h1>
         </div>
       </div>
       <div class="row">
-        <div class="col-md">
-          <div class="input-group">
-            <input class="form-control" type="text" id="original_url" placeholder="Enter a website URL and create a tracker">
-            <div class="input-group-append">
-              <button class="btn btn-info" type="submit" id="submit_btn">Create Tracker</button>
-            </div>
+        <div class="col-md-9">
+          <input class="form-control" type="text" id="original_url" autocomplete="off" oninput="checkURL()" placeholder="Enter a website URL and create a tracker">
+        </div>
+        <div class="col-md-3">
+          <div class="row">
+            <button class="btn btn-info" type="submit" id="submit_btn" disabled>Create Tracker 📡</button>
           </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md">
+          <span id="alert-span">f</span>
         </div>
       </div>
     </div>
@@ -27,15 +32,14 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tracker Created Successfully</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+            <h5 class="modal-title">Tracker Created Successfully ✔️</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>❌</span>
             </button>
           </div>
           <div class="modal-body" id="modal-body"></div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Go To Tracker</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a id="popup_btn" href="/" type="button" class="btn btn-info">Check out yo tracker 📡</a>
           </div>
         </div>
       </div>

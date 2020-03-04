@@ -6,6 +6,29 @@
     include head.pug
   </head>
   <body>
-    <h1>Welcome To Grabify Clone</h1>
+    <div class="container">
+    <h3>Tracker info</h3>
+    ul
+      each val in tracker_info
+        li= val
+    <h3>Logs</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>IP address</th>
+          <th>Time Captured</th>
+          <th>User Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+        each val in ip_info
+          <tr>
+            td= val.ip_address
+            td= val.time_captured
+            td= val.user_agent
+          </tr>
+      </tbody>
+    </table>
+    </div>
   </body>
 </html>

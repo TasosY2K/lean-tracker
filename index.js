@@ -1,5 +1,6 @@
 // One nighter coding challenge the grabify clone
 const express = require('express');
+const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const shortid = require('shortid');
 const moment = require('moment');
@@ -10,6 +11,7 @@ const func = require('./functions/functions.js');
 let connection = mysql.createConnection(config.database);
 let app = express();
 
+app.use(express.static('images'))
 app.set('view engine', 'pug');
 
 connection.query('CREATE DATABASE IF NOT EXISTS grabify_clone', (err) => {
@@ -20,7 +22,7 @@ connection.query('CREATE DATABASE IF NOT EXISTS grabify_clone', (err) => {
           console.log('Database error: ', err);
           func.shutdown();
         } else {
-          console.log('Database setup completed successfully!');
+          console.log('Database setup completed');
         }
       });
     });
@@ -32,12 +34,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:id', (req, res) => {
-
   let id = req.params.id;
   let sql = `SELECT * FROM tracker WHERE id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
-
     if (results.length > 0) {
 
       let id = results[0].id;
@@ -61,7 +61,7 @@ app.get('/:id', (req, res) => {
       connection.query(sql, (err) => {
         res.redirect(original_url);
       });
-      
+
     } else {
       res.redirect('/');
     }
@@ -71,26 +71,33 @@ app.get('/:id', (req, res) => {
 app.get('/monitor/:id', (req, res) => {
   let id = req.params.id;
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
-  let sql2 = `SELECT * FROM ip WHERE id = '${id}'`;
-
 
   connection.query(sql, (err, results, fields) => {
-    console.log(results);
-  });
+    if (results.length > 0) {
+      id = results[0].id;
+      sql = `SELECT * FROM ip WHERE id = '${id}'`;
 
-  connection.query(sql2, (err, results, fields) => {
-    console.log(results);
-  });
+      let tracker_info = results[0];
 
-  res.render('monitor');
+      connection.query(sql, (err, results, fields) => {
+        let ip_info = results;
+
+        res.render('monitor', {ip_info: ip_info, tracker_info: tracker_info});
+      });
+
+    } else {
+      res.render('alert', {alert: 'Monitor does not exist'});
+    }
+  });
 });
 
 app.post('/create', (req, res) => {
-  original_url = req.query.url;
-  id = shortid.generate();
-  admin_id = shortid.generate();
+  console.log(req.query);
+  let original_url = req.query.url;
+  let id = shortid.generate();
+  let admin_id = shortid.generate();
 
-  sql = `INSERT INTO tracker (
+  let sql = `INSERT INTO tracker (
     id,
     admin_id,
     original_url,
@@ -121,4 +128,4 @@ app.post('/create', (req, res) => {
 });
 
 app.listen(config.port, '0.0.0.0');
-console.log('Server started at port:', config.port);
+console.log('Server started at port', config.port);
