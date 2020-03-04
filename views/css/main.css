@@ -7,6 +7,10 @@ input[type="text"]:read-only {
   background: transparent;
 }
 
+input[type="text"]:-moz-read-only {
+  background: transparent;
+}
+
 table, table-sm, th, td {
   border-color: #000 !important;
   vertical-align: baseline !important;
