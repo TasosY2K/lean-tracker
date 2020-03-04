@@ -47,6 +47,10 @@ body {
   border-radius: 30px;
 }
 
+.alert_btn {
+  border-radius: 30px;
+}
+
 #alert-span {
   color: transparent;
   border-radius: 30px;
