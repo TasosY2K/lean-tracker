@@ -27,63 +27,57 @@ function show_info(unique_id) {
     type: 'GET',
     url: '/ip/' + unique_id,
     success : (response) => {
-      $.ajax({
-        type: 'GET',
-        url: `http://ip-api.com/json/${response.ip_address}`,
-        success : (api_info) => {
-          $('#modal-body').html(`
-            <table class="table table-sm table-responsive-sm">
-              <tbody>
-                  <tr>
-                    <td>Capture ID</td>
-                    <td>${response.unique_id}</td>
-                  <tr>
-                  <tr>
-                    <td>IP address</td>
-                    <td>${response.ip_address}</td>
-                  </tr>
-                  <tr>
-                    <td>Time/Date</td>
-                    <td>${response.time_captured}</td>
-                  </tr>
-                  <tr>
-                    <td>Country</td>
-                    <td>${api_info.country}</td>
-                  </tr>
-                  <tr>
-                    <td>Region</td>
-                    <td>${api_info.regionName}</td>
-                  </tr>
-                  <tr>
-                    <td>City</td>
-                    <td>${api_info.city}</td>
-                  </tr>
-                  <tr>
-                    <td>Time Zone</td>
-                    <td>${api_info.timezone}</td>
-                  </tr>
-                  <tr>
-                    <td>Coordinates</td>
-                    <td>${api_info.lat}, ${api_info.lon}<br><a style="float: left" id="map_link" href="https://www.google.com/maps/search/?api=1&query=${api_info.lat},${api_info.lon}" target="_blank">Open In Google Maps 🗺️</a></td>
-                  </tr>
-                  <tr>
-                    <td>ISP</td>
-                    <td>${api_info.isp}</td>
-                  </tr>
-                  <tr>
-                    <td>AS</td>
-                    <td>${api_info.as}</td>
-                  </tr>
-                  <tr>
-                    <td>User Agent</td>
-                    <td>${response.user_agent}</td>
-                  </tr>
-              </tbody>
-            </table>
-            `);
-            $('.modal').modal('show');
-        }
-      });
+      $('#modal-body').html(`
+      <table class="table table-sm table-responsive-sm">
+        <tbody>
+          <tr>
+            <td>Capture ID</td>
+            <td>${response.unique_id}</td>
+          <tr>
+          <tr>
+            <td>IP address</td>
+            <td>${response.ip_address}</td>
+          </tr>
+          <tr>
+            <td>Time/Date</td>
+            <td>${response.time_captured}</td>
+          </tr>
+          <tr>
+            <td>Country</td>
+            <td>${response.country}</td>
+          </tr>
+          <tr>
+            <td>Region</td>
+            <td>${response.region}</td>
+          </tr>
+          <tr>
+            <td>City</td>
+            <td>${response.city}</td>
+          </tr>
+          <tr>
+            <td>Time Zone</td>
+            <td>${response.timezone}</td>
+          </tr>
+          <tr>
+            <td>Coordinates</td>
+            <td>${response.coordinates}<br><a style="float: left" id="map_link" href="https://www.google.com/maps/search/?api=1&query=${response.coordinates}" target="_blank">Open In Google Maps 🗺️</a></td>
+          </tr>
+          <tr>
+            <td>ISP</td>
+            <td>${response.isp}</td>
+          </tr>
+          <tr>
+            <td>AS</td>
+            <td>${response.asp}</td>
+          </tr>
+          <tr>
+            <td>User Agent</td>
+            <td>${response.user_agent}</td>
+          </tr>
+        </tbody>
+      </table>
+      `);
+      $('.modal').modal('show');
     }
   });
 }

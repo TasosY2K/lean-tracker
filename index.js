@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const shortid = require('shortid');
 const moment = require('moment');
+const http = require('http');
 
 const config = require('./config.json');
 const func = require('./functions/functions.js');
@@ -13,8 +14,8 @@ let app = express();
 
 app.set('view engine', 'pug');
 
-connection.query('CREATE DATABASE IF NOT EXISTS grabify_clone', (err) => {
-  connection.query('USE grabify_clone', (err) => {
+connection.query('CREATE DATABASE IF NOT EXISTS lean_tracker', (err) => {
+  connection.query('USE lean_tracker', (err) => {
     connection.query(func.readSql('./sql/create_table_tracker.sql'), (err) => {
       connection.query(func.readSql('./sql/create_table_ip.sql'), (err) => {
         if (err) {
@@ -40,28 +41,58 @@ app.get('/:id', (req, res) => {
     if (results.length > 0) {
 
       let id = results[0].id;
+      let ip_address = '141.237.9.209';
       let unique_id = shortid.generate();
       let timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
       let useragent = req.headers['user-agent'];
 
-      sql = `INSERT INTO ip (
-        unique_id,
-        id,
-        ip_address,
-        time_captured,
-        user_agent
-      ) VALUES (
-        '${unique_id}',
-        '${id}',
-        '${req.ip}',
-        '${timestamp}',
-        '${useragent}'
-      )`;
+      http.get(`http://ip-api.com/json/${ip_address}`, (response) => {
+        let data = '';
 
-      let original_url = results[0].original_url;
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
 
-      connection.query(sql, (err) => {
-        res.redirect(original_url);
+        response.on('end', () => {
+          data = JSON.parse(data);
+
+          sql = `INSERT INTO ip (
+            unique_id,
+            id,
+            ip_address,
+            time_captured,
+            country,
+            region,
+            city,
+            timezone,
+            coordinates,
+            isp,
+            asp,
+            user_agent
+          ) VALUES (
+            '${unique_id}',
+            '${id}',
+            '${ip_address}',
+            '${timestamp}',
+            '${data.country}',
+            '${data.region}',
+            '${data.city}',
+            '${data.timezone}',
+            '${data.lat + ", " + data.lon}',
+            '${data.isp}',
+            '${data.as}',
+            '${useragent}'
+          )`;
+
+          let original_url = results[0].original_url;
+
+          connection.query(sql, (err) => {
+            res.redirect(original_url);
+          });
+        });
+
+      }).on("error", (err) => {
+        console.log("Error: " + err.message);
       });
 
     } else {
