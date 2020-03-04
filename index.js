@@ -71,6 +71,32 @@ app.get('/:id', (req, res) => {
   });
 });
 
+app.get('/ip/:id', (req, res) => {
+  let id = req.params.id;
+  let sql = `SELECT * FROM ip WHERE unique_id = '${id}'`;
+
+  connection.query(sql, (err, results, fields) => {
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.send(`IP with ID: ${id} not found`);
+    }
+  });
+});
+
+app.get('/tracker/:id', (req, res) => {
+  let id = req.params.id;
+  let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
+
+  connection.query(sql, (err, results, fields) => {
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.send(`Tracker with ID: ${id} not found`);
+    }
+  });
+});
+
 app.get('/monitor/:id', (req, res) => {
   let id = req.params.id;
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
@@ -84,12 +110,11 @@ app.get('/monitor/:id', (req, res) => {
 
       connection.query(sql, (err, results, fields) => {
         let ip_info = results;
-
         res.render('monitor', {ip_info: ip_info, tracker_info: tracker_info});
       });
 
     } else {
-      res.render('alert', {alert: 'Monitor does not exist'});
+      res.render('alert', {alert: `Tracker with ID: ${id} not found ❌`});
     }
   });
 });
