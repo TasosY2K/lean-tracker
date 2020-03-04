@@ -2,30 +2,74 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Grabify Clone</title>
+    <title>Lean Tracker</title>
     include head.pug
   </head>
   <body>
     <div class="container">
-    <h3>Tracker info</h3>
-    ul
-      each val in tracker_info
-        li= val
-    <h3>Logs</h3>
+      <div class="row">
+        <h1 class="mt-3">Tracker info</h1>
+        <div class="input-group mt-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text inpt-group-span">Link ID</span>
+          </div>
+          input(type="text" class="form-control inpt-group-input inpt-group-input-1" value=tracker_info.id readonly)
+          <button class="btn btn-info inpt-group-btn" onclick="copyText(1)" >Copy 📋</button>
+        </div>
+        <div class="input-group mt-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text inpt-group-span">Tracker ID</span>
+          </div>
+          input(type="text" class="form-control inpt-group-input inpt-group-input-2" value=tracker_info.admin_id readonly)
+          <button class="btn btn-info inpt-group-btn" onclick="copyText(2)" >Copy 📋</button>
+        </div>
+        <div class="input-group mt-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text inpt-group-span">Original URL</span>
+          </div>
+          input(type="text" class="form-control inpt-group-input inpt-group-input-3" value=tracker_info.original_url readonly)
+          <button class="btn btn-info inpt-group-btn" onclick="copyText(3)" >Copy 📋</button>
+        </div>
+        <div class="input-group mt-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text inpt-group-span">Short URL</span>
+          </div>
+          input(type="text" class="form-control inpt-group-input inpt-group-input-4" value=tracker_info.short_url readonly)
+          <button class="btn btn-info inpt-group-btn" onclick="copyText(4)" >Copy 📋</button>
+        </div>
+        <div class="input-group mt-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text inpt-group-span">Tracker URL</span>
+          </div>
+          input(type="text" class="form-control inpt-group-input inpt-group-input-5" value=tracker_info.monitoring_url readonly)
+          <button class="btn btn-info inpt-group-btn" onclick="copyText(5)" >Copy 📋</button>
+        </div>
+      </div>
+      <div class="row">
+        <p class="mt-3" style="font-size: 2.4em">Captures:&nbsp;
+          span= ip_info.length
+        </p>
+      </div>
     <table class="table">
       <thead>
         <tr>
+          <th>Capture ID</th>
           <th>IP address</th>
           <th>Time Captured</th>
           <th>User Agent</th>
+          <th>Extra</th>
         </tr>
       </thead>
       <tbody>
         each val in ip_info
           <tr>
+            td= val.number_id
             td= val.ip_address
             td= val.time_captured
             td= val.user_agent
+            <td>
+              button(class="btn btn-info more_btn")
+            </td>
           </tr>
       </tbody>
     </table>

@@ -7,6 +7,10 @@ input[type="text"]:read-only {
   background: transparent;
 }
 
+table, th, td {
+  border-color: #000 !important;
+}
+
 body {
   font-family: 'Oxanium', cursive;
   color: #000;
@@ -36,6 +40,10 @@ body {
 }
 
 #submit_btn {
+  border-radius: 30px;
+}
+
+.more_btn {
   border-radius: 30px;
 }
 

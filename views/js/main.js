@@ -24,6 +24,8 @@ function validateUrl(value) {
 
 $(document).ready(() => {
 
+  $('.more_btn').html('More 📈');
+
   $('#delete_btn').click(() => {
     $("#original_url").val("");
     checkURL();
