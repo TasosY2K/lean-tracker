@@ -12,9 +12,58 @@ $(document).ready(() => {
         url: '/create?url=' + url,
         success : (response) => {
           console.log(response);
-          window.location.replace(response.monitoring_url);
+          $('#modal-body').html(`
+            <div class="alert alert-danger" role="alert">Make sure to save your tracker URL!</div>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Link ID</span>
+              </div>
+              <input type="text" class="form-control" value="${response.id}">
+              <div class="input-group-append">
+                <button class="btn btn-info">Copy</button>
+              </div>
+            </div>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Tracker ID</span>
+              </div>
+              <input type="text" class="form-control" value="${response.admin_id}">
+              <div class="input-group-append">
+                <button class="btn btn-info">Copy</button>
+              </div>
+            </div>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Original URL</span>
+              </div>
+              <input type="text" class="form-control" value="${response.original_url}">
+              <div class="input-group-append">
+                <button class="btn btn-info">Copy</button>
+              </div>
+            </div>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Short URL</span>
+              </div>
+              <input type="text" class="form-control" value="${response.short_url}">
+              <div class="input-group-append">
+                <button class="btn btn-info">Copy</button>
+              </div>
+            </div>
+            <div class="input-group mt-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Tracker URL</span>
+              </div>
+              <input type="text" class="form-control" value="${response.monitoring_url}">
+              <div class="input-group-append">
+                <button class="btn btn-info">Copy</button>
+              </div>
+            </div>
+          `);
+          $('.modal').modal('show');
         }
       });
     }
   });
+
 });
