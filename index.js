@@ -127,7 +127,7 @@ app.get('/tracker/:id', (req, res) => {
   });
 });
 
-app.get('/monitor/:id', (req, res) => {
+app.get('/track/:id', (req, res) => {
   let id = req.params.id;
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
 
@@ -140,7 +140,7 @@ app.get('/monitor/:id', (req, res) => {
 
       connection.query(sql, (err, results, fields) => {
         let ip_info = results;
-        res.render('monitor', {ip_info: ip_info, tracker_info: tracker_info});
+        res.render('track', {ip_info: ip_info, tracker_info: tracker_info});
       });
 
     } else {
@@ -161,13 +161,13 @@ app.post('/create', (req, res) => {
         admin_id,
         original_url,
         short_url,
-        monitoring_url
+        tracking_url
       ) VALUES (
         '${id}',
         '${admin_id}',
         '${original_url}',
         '${config.url}/${id}',
-        '${config.url}/monitor/${admin_id}'
+        '${config.url}/track/${admin_id}'
       )`;
 
       connection.query(sql, (err) => {
@@ -180,7 +180,7 @@ app.post('/create', (req, res) => {
             admin_id: admin_id,
             original_url: original_url,
             short_url: `${config.url}/${id}`,
-            monitoring_url: `${config.url}/monitor/${admin_id}`
+            tracking_url: `${config.url}/track/${admin_id}`
           });
         }
       });

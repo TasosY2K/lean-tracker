@@ -131,11 +131,11 @@ $(document).ready(() => {
               <div class="input-group-prepend">
                 <span class="input-group-text inpt-group-span">Tracker URL</span>
               </div>
-              <input type="text" class="form-control inpt-group-input inpt-group-input-5" value="${response.monitoring_url}" readonly>
+              <input type="text" class="form-control inpt-group-input inpt-group-input-5" value="${response.tracking_url}" readonly>
               <button class="btn btn-info inpt-group-btn" onclick="copyText(5)" >Copy 📋</button>
             </div>
           `);
-          $('#popup_btn').attr('href', response.monitoring_url);
+          $('#popup_btn').attr('href', response.tracking_url);
           $('.modal').modal('show');
         }
       });

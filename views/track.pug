@@ -5,7 +5,7 @@
     <title>Lean Tracker</title>
     include head.pug
     script
-      include ./js/monitor.js
+      include ./js/tracker.js
   </head>
   <body>
     <div class="container">
@@ -43,7 +43,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text inpt-group-span">Tracker URL</span>
           </div>
-          input(type="text" class="form-control inpt-group-input inpt-group-input-5" value=tracker_info.monitoring_url readonly)
+          input(type="text" class="form-control inpt-group-input inpt-group-input-5" value=tracker_info.tracking_url readonly)
           <button class="btn btn-info inpt-group-btn" onclick="copyText(5)" >Copy 📋</button>
         </div>
       </div>

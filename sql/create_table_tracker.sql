@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS tracker (
   admin_id VARCHAR(14) NOT NULL,
   original_url VARCHAR(255) NOT NULL,
   short_url VARCHAR(255) NOT NULL,
-  monitoring_url VARCHAR(255) NOT NULL
+  tracking_url VARCHAR(255) NOT NULL
 )
