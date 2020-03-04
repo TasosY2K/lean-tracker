@@ -92,39 +92,46 @@ app.get('/monitor/:id', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-  console.log(req.query);
   let original_url = req.query.url;
-  let id = shortid.generate();
-  let admin_id = shortid.generate();
+  if (original_url) {
+    if (func.validateUrl(original_url)) {
+      let id = shortid.generate();
+      let admin_id = shortid.generate();
 
-  let sql = `INSERT INTO tracker (
-    id,
-    admin_id,
-    original_url,
-    short_url,
-    monitoring_url
-  ) VALUES (
-    '${id}',
-    '${admin_id}',
-    '${original_url}',
-    '${config.url}/${id}',
-    '${config.url}/monitor/${admin_id}'
-  )`;
+      let sql = `INSERT INTO tracker (
+        id,
+        admin_id,
+        original_url,
+        short_url,
+        monitoring_url
+      ) VALUES (
+        '${id}',
+        '${admin_id}',
+        '${original_url}',
+        '${config.url}/${id}',
+        '${config.url}/monitor/${admin_id}'
+      )`;
 
-  connection.query(sql, (err) => {
-    if (err) {
-      console.log('Database error: ', err);
-      res.sendStatus(503);
-    } else {
-      res.json({
-        id: id,
-        admin_id: admin_id,
-        original_url: original_url,
-        short_url: `${config.url}/${id}`,
-        monitoring_url: `${config.url}/monitor/${admin_id}`
+      connection.query(sql, (err) => {
+        if (err) {
+          console.log('Database error: ', err);
+          res.sendStatus(503);
+        } else {
+          res.json({
+            id: id,
+            admin_id: admin_id,
+            original_url: original_url,
+            short_url: `${config.url}/${id}`,
+            monitoring_url: `${config.url}/monitor/${admin_id}`
+          });
+        }
       });
+    } else {
+      res.render('alert', {alert: 'Input not validated'});
     }
-  });
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.listen(config.port, '0.0.0.0');
