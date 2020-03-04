@@ -11,7 +11,6 @@ const func = require('./functions/functions.js');
 let connection = mysql.createConnection(config.database);
 let app = express();
 
-app.use(express.static('images'))
 app.set('view engine', 'pug');
 
 connection.query('CREATE DATABASE IF NOT EXISTS grabify_clone', (err) => {
