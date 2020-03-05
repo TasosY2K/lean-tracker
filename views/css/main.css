@@ -116,6 +116,9 @@ body {
   .main-header {
     font-size: 8vw;
   }
+  #alert_header {
+    font-size: 3.5vw;
+  }
 }
 
 @media only screen and (max-width: 770px) {
@@ -129,6 +132,9 @@ body {
     text-align: center;
     display: block;
   }
+  #alert_header {
+    font-size: 3.5vw;
+  }
 }
 
 @media only screen and (max-width: 500px) {
@@ -140,5 +146,11 @@ body {
   }
   .modal-title {
     font-size: 1rem;
+  }
+  .setting-btn {
+    margin: 10px 5px 10px 15px !important;
+  }
+  #alert_header {
+    font-size: 4.5vw;
   }
 }

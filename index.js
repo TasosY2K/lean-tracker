@@ -242,7 +242,7 @@ app.post('/create', (req, res) => {
         }
       });
     } else {
-      res.render('alert', {alert: 'Input not validated'});
+      res.render('alert', {alert: 'Input not validated ❌'});
     }
   } else {
     res.redirect('/');
