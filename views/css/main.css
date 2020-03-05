@@ -28,6 +28,10 @@ body {
   transform: translate(-50%, -80%);
 }
 
+.round {
+  border-radius: 30px;
+}
+
 .close {
   opacity: 1;
 }
@@ -36,33 +40,18 @@ body {
   opacity: 1 !important;
 }
 
+.setting-btn {
+  margin: 15px 20px 20px 0px;
+  float: right;
+  width: 100%;
+}
+
 #original_url {
   border-color: #000;
   border-radius: 0px;
   border-top-width: 0px;
   border-right-width: 0px;
   border-left-width: 0px;
-}
-
-#submit_btn {
-  border-radius: 30px;
-}
-
-.more_btn {
-  border-radius: 30px;
-}
-
-.alert_btn {
-  border-radius: 30px;
-}
-
-#alert-span {
-  color: transparent;
-  border-radius: 30px;
-}
-
-#popup_btn {
-  border-radius: 30px;
 }
 
 #delete_btn {
@@ -90,6 +79,10 @@ body {
 
 .alert-danger {
   border-radius: 30px;
+}
+
+#alert-span {
+  color: transparent;
 }
 
 .inpt-group-input {

@@ -15,7 +15,7 @@
       <div class="row">
         <div class="col-md-9">
           <div class="input-group">
-            <input class="form-control" type="text" id="original_url" autocomplete="off" oninput="checkURL()" placeholder="Enter a website URL and create a tracker">
+            <input class="form-control" type="url" id="original_url" autocomplete="off" oninput="checkURL()" placeholder="Enter a website URL and create a tracker">
             <div class="input-group-append">
               <button class="btn" id="delete_btn" type="button">❌</button>
             </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-3">
           <div class="row">
-            <button class="btn btn-info" type="submit" id="submit_btn" disabled>Create Tracker 📡</button>
+            <button class="btn btn-info round" type="submit" id="submit_btn" disabled>Create Tracker 📡</button>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div class="modal fade">
+    <div class="modal fade" id="tracker_modal">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -42,9 +42,9 @@
               <span>❌</span>
             </button>
           </div>
-          <div class="modal-body" id="modal-body"></div>
+          <div class="modal-body" id="tracker_modal_body"></div>
           <div class="modal-footer">
-            <a id="popup_btn" href="/" type="button" class="btn btn-info" target="_blank">Check out yo tracker 📡</a>
+            <a id="popup_btn" href="/" type="button" class="btn btn-info round" target="_blank">Check out yo tracker 📡</a>
           </div>
         </div>
       </div>

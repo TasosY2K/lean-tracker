@@ -1,21 +1,39 @@
 function checkURL() {
-  if (true) {
-    let url = $("#original_url").val();
-    if (validateUrl(url)) {
-      $('#submit_btn').prop('disabled', false);
-      $('#alert-span').html('URL validated ✔️');
-      $('#alert-span').css("color", "#00cc00");
-    } else {
-      $('#submit_btn').prop('disabled', true);
-      $('#alert-span').html('URL not validated ❌');
-      $('#alert-span').css("color", "#e60000");
-    }
+  let url = $("#original_url").val();
+  if (!url) {
+    $('#submit_btn').prop('disabled', true);
+    $('#alert-span').css("color", "transparent");
+  } else if (validateUrl(url)) {
+    $('#submit_btn').prop('disabled', false);
+    $('#alert-span').html('URL validated ✔️');
+    $('#alert-span').css("color", "#00cc00");
+  } else {
+    $('#submit_btn').prop('disabled', true);
+    $('#alert-span').html('URL not validated ❌');
+    $('#alert-span').css("color", "#e60000");
   }
 }
 
 function copyText(element) {
   $(`.inpt-group-input-${element}`).select();
   document.execCommand("copy");
+}
+
+function changeURLfunc() {
+  let url = $('#change_url_inpt').val();
+  if (!url) {
+    $('.change-url').addClass('disabled');
+    $('#change_url_form').attr('href', '');
+    $('#change_url_inpt').css('border-color', '#000');
+  } else if (validateUrl(url)) {
+    $('.change-url').removeClass('disabled');
+    $('#change_url_form').attr('href', `${window.location.origin}/change/${$('.inpt-group-input-2').val()}?url=${url}`);
+    $('#change_url_inpt').css('border-color', '#00cc00');
+  } else {
+    $('.change-url').addClass('disabled');
+    $('#change_url_form').attr('href', '');
+    $('#change_url_inpt').css('border-color', '#e60000');
+  }
 }
 
 function validateUrl(value) {
@@ -27,7 +45,7 @@ function show_info(unique_id) {
     type: 'GET',
     url: '/ip/' + unique_id,
     success : (response) => {
-      $('#modal-body').html(`
+      $('#info_modal_body').html(`
       <table class="table table-sm table-responsive-sm">
         <tbody>
           <tr>
@@ -47,16 +65,24 @@ function show_info(unique_id) {
             <td>${response.country}</td>
           </tr>
           <tr>
-            <td>Region</td>
-            <td>${response.region}</td>
-          </tr>
-          <tr>
             <td>City</td>
             <td>${response.city}</td>
           </tr>
           <tr>
             <td>Time Zone</td>
             <td>${response.timezone}</td>
+          </tr>
+          <tr>
+            <td>Browser</td>
+            <td>${response.browser}</td>
+          </tr>
+          <tr>
+            <td>OS</td>
+            <td>${response.os}</td>
+          </tr>
+          <tr>
+            <td>Platform</td>
+            <td>${response.platform}</td>
           </tr>
           <tr>
             <td>Coordinates</td>
@@ -77,7 +103,7 @@ function show_info(unique_id) {
         </tbody>
       </table>
       `);
-      $('.modal').modal('show');
+      $('#info_modal').modal('show');
     }
   });
 }
@@ -97,7 +123,7 @@ $(document).ready(() => {
         url: '/create?url=' + url,
         success : (response) => {
           console.log(response);
-          $('#modal-body').html(`
+          $('#tracker_modal_body').html(`
             <div class="alert alert-danger" role="alert">Make sure to save your tracker URL</div>
             <div class="input-group mt-1">
               <div class="input-group-prepend">
@@ -136,7 +162,7 @@ $(document).ready(() => {
             </div>
           `);
           $('#popup_btn').attr('href', response.tracking_url);
-          $('.modal').modal('show');
+          $('#tracker_modal').modal('show');
         }
       });
     }
