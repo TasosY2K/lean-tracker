@@ -3,14 +3,20 @@ function checkURL() {
   if (!url) {
     $('#submit_btn').prop('disabled', true);
     $('#alert-span').css("color", "transparent");
+    $('#delete_btn').css("border-color", "#000");
+    $('#original_url').css("border-color", "#000");
   } else if (validateUrl(url)) {
     $('#submit_btn').prop('disabled', false);
     $('#alert-span').html('URL validated ✔️');
     $('#alert-span').css("color", "#00cc00");
+    $('#delete_btn').css("border-color", "#00cc00");
+    $('#original_url').css("border-color", "#00cc00");
   } else {
     $('#submit_btn').prop('disabled', true);
     $('#alert-span').html('URL not validated ❌');
     $('#alert-span').css("color", "#e60000");
+    $('#delete_btn').css("border-color", "#e60000");
+    $('#original_url').css("border-color", "#e60000");
   }
 }
 
