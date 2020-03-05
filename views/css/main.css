@@ -11,14 +11,46 @@ input[type="text"]:-moz-read-only {
   background: transparent;
 }
 
-table, table-sm, th, td {
-  border-color: #000 !important;
+input:focus {
+  background-color: transparent !important;
+}
+
+input:required {
+  box-shadow:none;
+}
+
+input:invalid {
+  box-shadow:none;
+}
+
+::placeholder {
+  color: #343a40 !important;
+}
+
+.table {
   vertical-align: baseline !important;
+  border-color: #000;
+  color: #000;
 }
 
 body {
   font-family: 'Oxanium', cursive;
   color: #000;
+}
+
+.dark-mode {
+  color: #fff !important;
+  background-color: #343a40;
+}
+
+.dark-input {
+  color: #fff !important;
+  background-color: transparent !important;
+  border-color: #fff !important;
+}
+
+.dark-input::placeholder {
+  color: #b6afa8 !important;
 }
 
 .center {
@@ -33,10 +65,11 @@ body {
 }
 
 .close {
-  opacity: 1;
+  opacity: 100%;
+  text-shadow: none;
 }
 
-.close:hover {
+.close:hover, .close:active, .close:focus {
   opacity: 1 !important;
 }
 
@@ -46,12 +79,42 @@ body {
   width: 100%;
 }
 
+.form-control {
+  color: #000;
+  border-color: #000;
+}
+
+.form-control:focus {
+  color: #000;
+  border-color: #000;
+}
+
+.inpt-group-span {
+  color: #000;
+  border-color: #000;
+}
+
 #original_url {
+  background-color: transparent;
   border-color: #000;
   border-radius: 0px;
   border-top-width: 0px;
   border-right-width: 0px;
   border-left-width: 0px;
+}
+
+#change_url_inpt {
+  border-radius: 0px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+}
+
+#darkmode_btn {
+  padding: 5px;
+  cursor: pointer;
+  float: right;
+  user-select: none;
 }
 
 #delete_btn {
@@ -63,22 +126,18 @@ body {
   border-left-width: 0px;
 }
 
+.modal {
+  color: #000 !important;
+}
+
 .modal-content {
   padding: 15px;
   border-color: transparent;
   border-radius: 30px;
 }
 
-.modal-header {
+.modal-header, .modal-footer {
   border-color: transparent;
-}
-
-.modal-footer {
-  border-color: transparent;
-}
-
-.alert-danger {
-  border-radius: 30px;
 }
 
 #alert-span {
@@ -87,15 +146,10 @@ body {
 
 .inpt-group-input {
   background-color: transparent;
-  border-color: #000;
   border-radius: 0px;
   border-top-width: 0px;
   border-right-width: 0px;
   border-left-width: 0px;
-}
-
-.inpt-group-input:focus {
-  border-color: #000;
 }
 
 .inpt-group-btn {
@@ -105,7 +159,6 @@ body {
 
 .inpt-group-span {
   background-color: transparent;
-  border-color: #000;
   border-radius: 0px;
   border-top-width: 0px;
   border-right-width: 0px;
@@ -138,9 +191,6 @@ body {
 }
 
 @media only screen and (max-width: 500px) {
-  .row {
-    margin-top: 20px;
-  }
   .main-header {
     font-size: 9vw;
   }

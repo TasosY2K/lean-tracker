@@ -52,7 +52,7 @@ function show_info(unique_id) {
     url: '/ip/' + unique_id,
     success : (response) => {
       $('#info_modal_body').html(`
-      <table class="table table-sm table-responsive-sm">
+      <table id="table_info" class="table table-sm table-responsive-sm">
         <tbody>
           <tr>
             <td>Capture ID</td>
@@ -114,7 +114,75 @@ function show_info(unique_id) {
   });
 }
 
+function setDarkMode() {
+  $('body').addClass('dark-mode');
+  $('td, #original_url, .inpt-group-span, .inpt-group-input, #delete_btn').addClass('dark-input');
+  $('th, td').css('border-color', '#fff');
+  $('table, .table, td').css('color', '#fff');
+  $('#darkmode_btn').html('☀️');
+}
+
+function setLightMode() {
+  $('body').removeClass('dark-mode');
+  $('td, #original_url, .inpt-group-span, .inpt-group-input, #delete_btn').removeClass('dark-input');
+  $('th, td').css('border-color', '#000');
+  $('table, .table, td').css('color', '#000');
+  $('#darkmode_btn').html('🌑');
+}
+
+function setCookie(name,value,days) {
+  let expires = "";
+  if (days) {
+    let date = new Date();
+    date.setTime(date.getTime() + (days*24*60*60*1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/;";
+}
+
+function getCookie(name) {
+  let nameEQ = name + "=";
+  let ca = document.cookie.split(';');
+  for(let i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
 $(document).ready(() => {
+  let dark_cookie = getCookie('darkmode');
+
+  if (dark_cookie == 'true') {
+    setDarkMode();
+  }
+
+  if (dark_cookie == 'false') {
+    setLightMode();
+  }
+
+  if (!dark_cookie) {
+    setLightMode();
+  }
+
+  $('#darkmode_btn').click(() => {
+    dark_cookie = getCookie('darkmode');
+    if (dark_cookie == 'true') {
+      setCookie('darkmode', 'false', 1);
+      setLightMode();
+    }
+
+    if (dark_cookie == 'false') {
+      setCookie('darkmode', 'true', 1);
+      setDarkMode();
+    }
+
+    if (!dark_cookie) {
+      setCookie('darkmode', 'true', 1);
+      setDarkMode();
+    }
+  });
 
   $('#delete_btn').click(() => {
     $("#original_url").val("");
@@ -130,7 +198,6 @@ $(document).ready(() => {
         success : (response) => {
           console.log(response);
           $('#tracker_modal_body').html(`
-            <div class="alert alert-danger" role="alert">Make sure to save your tracker URL</div>
             <div class="input-group mt-1">
               <div class="input-group-prepend">
                 <span class="input-group-text inpt-group-span">Link ID</span>
@@ -166,6 +233,7 @@ $(document).ready(() => {
               <input type="text" class="form-control inpt-group-input inpt-group-input-5" value="${response.tracking_url}" readonly>
               <button class="btn btn-info inpt-group-btn" onclick="copyText(5)" >Copy 📋</button>
             </div>
+            <div class="alert alert-info round mt-3 mb-0" role="alert">Make sure to save your Tracker URL</div>
           `);
           $('#popup_btn').attr('href', response.tracking_url);
           $('#tracker_modal').modal('show');
