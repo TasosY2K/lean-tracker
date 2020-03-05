@@ -1,6 +1,6 @@
-.btn:focus,.btn:active,.form-control:focus,.form-control:active {
+.btn:focus,.btn:active,.close:focus,.close:active,.form-control:focus,.form-control:active {
    outline: none !important;
-   box-shadow: none;
+   box-shadow: none !important;
 }
 
 input[type="text"]:read-only {
