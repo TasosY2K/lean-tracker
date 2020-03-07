@@ -22,9 +22,7 @@ connection.query('CREATE DATABASE IF NOT EXISTS lean_tracker', (err) => {
         if (err) {
           console.log('Database error: ', err);
           func.shutdown();
-        } else {
-          console.log('Database setup completed');
-        }
+        } 
       });
     });
   });
@@ -145,7 +143,7 @@ app.get('/track/:id', (req, res) => {
 
       connection.query(sql, (err, results, fields) => {
         let ip_info = results;
-        res.render('track', {ip_info: ip_info, tracker_info: tracker_info});
+        res.render('track', {ip_info: ip_info, tracker_info: tracker_info, id: tracker_info.admin_id});
       });
 
     } else {
@@ -250,4 +248,4 @@ app.post('/create', (req, res) => {
 });
 
 app.listen(config.port, '0.0.0.0');
-console.log('Server started at port', config.port);
+console.log('Serving at port:', config.port);
