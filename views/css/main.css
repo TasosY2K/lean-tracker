@@ -28,19 +28,20 @@ input:invalid {
 }
 
 .table {
-  vertical-align: baseline !important;
-  border-color: #000;
   color: #000;
+  border-color: #000;
+  vertical-align: baseline !important;
 }
 
 body {
-  font-family: 'Oxanium', cursive;
   color: #000;
+  background-color: #ffffff;
+  font-family: 'Oxanium', cursive;
 }
 
 .dark-mode {
   color: #fff !important;
-  background-color: #343a40;
+  background-color: #343a40 !important;
 }
 
 .dark-input {
@@ -64,6 +65,14 @@ body {
   border-radius: 30px;
 }
 
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
 .close {
   opacity: 100%;
   text-shadow: none;
@@ -79,31 +88,14 @@ body {
   width: 100%;
 }
 
-.form-control {
+.form-control, .form-control:focus, .inpt-group-span {
   color: #000;
   border-color: #000;
 }
 
-.form-control:focus {
-  color: #000;
-  border-color: #000;
-}
-
-.inpt-group-span {
-  color: #000;
-  border-color: #000;
-}
-
-#original_url {
+#original_url, #change_url_inpt, #delete_btn {
   background-color: transparent;
   border-color: #000;
-  border-radius: 0px;
-  border-top-width: 0px;
-  border-right-width: 0px;
-  border-left-width: 0px;
-}
-
-#change_url_inpt {
   border-radius: 0px;
   border-top-width: 0px;
   border-right-width: 0px;
@@ -117,13 +109,11 @@ body {
   user-select: none;
 }
 
-#delete_btn {
-  background-color: transparent;
-  border-color: #000;
-  border-radius: 0px;
-  border-top-width: 0px;
-  border-right-width: 0px;
-  border-left-width: 0px;
+#home_btn {
+  padding: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
 }
 
 .modal {
@@ -144,7 +134,7 @@ body {
   color: transparent;
 }
 
-.inpt-group-input {
+.inpt-group-input, .inpt-group-span  {
   background-color: transparent;
   border-radius: 0px;
   border-top-width: 0px;
@@ -157,12 +147,13 @@ body {
   border-radius: 30px;
 }
 
-.inpt-group-span {
-  background-color: transparent;
-  border-radius: 0px;
-  border-top-width: 0px;
-  border-right-width: 0px;
-  border-left-width: 0px;
+.footer-span {
+  color: #cc00ff;
+  text-decoration: none;
+}
+
+.footer-span:hover {
+  color: #cc00ff;
 }
 
 @media only screen and (max-width: 990px) {
