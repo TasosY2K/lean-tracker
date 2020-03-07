@@ -9,13 +9,12 @@ function checkURL() {
     $('#submit_btn').prop('disabled', false);
     $('#alert-span').html('URL validated ✔️');
     $('#alert-span').css("color", "#00cc00");
-    $('#delete_btn').css("border-color", "#00cc00");
-    $('#original_url').css("border-color", "#00cc00");
+    $('#delete_btn, #original_url').css("border-color", "#00cc00");
   } else {
     $('#submit_btn').prop('disabled', true);
     $('#alert-span').html('URL not validated ❌');
     $('#alert-span').css("color", "#e60000");
-    $('#delete_btn').css("border-color", "#e60000");
+    $('#delete_btn, #original_url').css("border-color", "#e60000");
     $('#original_url').css("border-color", "#e60000");
   }
 }
@@ -52,7 +51,7 @@ function show_info(unique_id) {
     url: '/ip/' + unique_id,
     success : (response) => {
       $('#info_modal_body').html(`
-      <table id="table_info" class="table table-sm table-responsive-sm">
+      <table class="table table-borderless table-sm table-responsive-sm">
         <tbody>
           <tr>
             <td>Capture ID</td>
@@ -92,7 +91,7 @@ function show_info(unique_id) {
           </tr>
           <tr>
             <td>Coordinates</td>
-            <td>${response.coordinates}<br><a style="float: left" id="map_link" href="https://www.google.com/maps/search/?api=1&query=${response.coordinates}" target="_blank">Open In Google Maps 🗺️</a></td>
+            <td>${response.coordinates}<br><a id="map_link" href="https://www.google.com/maps/search/?api=1&query=${response.coordinates}" target="_blank">Open In Google Maps 🗺️</a></td>
           </tr>
           <tr>
             <td>ISP</td>
@@ -241,5 +240,4 @@ $(document).ready(() => {
       });
     }
   });
-
 });
