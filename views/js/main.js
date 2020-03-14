@@ -49,6 +49,12 @@ function show_info(unique_id) {
   $.ajax({
     type: 'GET',
     url: '/ip/' + unique_id,
+    error: (request, status, error) => {
+      $('#error_modal_body').html(`
+        <p>${request.responseText}, try again later</p>
+      `);
+      $('#error_modal').modal('show');
+    },
     success : (response) => {
       $('#info_modal_body').html(`
       <table class="table table-borderless table-sm table-responsive-sm">
@@ -194,6 +200,12 @@ $(document).ready(() => {
       $.ajax({
         type: 'POST',
         url: '/create?url=' + url,
+        error: (request, status, error) => {
+          $('#error_modal_body').html(`
+            <p>${request.responseText}, try again later</p>
+          `);
+          $('#error_modal').modal('show');
+        },
         success : (response) => {
           console.log(response);
           $('#tracker_modal_body').html(`

@@ -1,9 +1,10 @@
 {
-  "port":"80",
-  "url":"http://localhost",
+  "port":"3000",
+  "url":"https://lean-tracker-demo.herokuapp.com",
   "database":{
-    "host":"localhost",
-    "user":"root",
-    "password":""
+    "host":"db4free.net",
+    "database":"leantracker",
+    "user":"leantracker",
+    "password":"59PAJ@WPpyd3cwG"
   }
 }

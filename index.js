@@ -1,10 +1,21 @@
-// One nighter coding challenge the grabify clone
+/*
+  _                    _____            _
+ | |   ___ __ _ _ _   |_   _| _ __ _ __| |_____ _ _
+ | |__/ -_) _` | ' \    | || '_/ _` / _| / / -_) '_|
+ |____\___\__,_|_||_|   |_||_| \__,_\__|_\_\___|_|
+
+  version: 1.0.9
+  author: leandev
+  github: https://github.com/TasosY2K/lean-tracker
+*/
+
 const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const shortid = require('shortid');
 const moment = require('moment');
+const figlet = require('figlet');
 
 const config = require('./config.json');
 const func = require('./functions/functions.js');
@@ -15,14 +26,24 @@ let app = express();
 app.use(require('express-useragent').express());
 app.set('view engine', 'pug');
 
+connection.on('error', (err) => {
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+		console.log('MySQL Error: Lost database connection');
+		process.exit();
+  } else {
+    console.log('MySQL Error:', err.sqlMessage);
+	  process.exit();
+	}
+});
+
 connection.query('CREATE DATABASE IF NOT EXISTS lean_tracker', (err) => {
+  if (err) console.log('MySQL Error: ', err.sqlMessage);
   connection.query('USE lean_tracker', (err) => {
+    if (err) console.log('MySQL Error: ', err.sqlMessage);
     connection.query(func.readSql('./sql/create_table_tracker.sql'), (err) => {
+      if (err) console.log('MySQL Error: ', err.sqlMessage);
       connection.query(func.readSql('./sql/create_table_ip.sql'), (err) => {
-        if (err) {
-          console.log('Database error: ', err);
-          func.shutdown();
-        } 
+        if (err) console.log('MySQL Error: ', err.sqlMessage);
       });
     });
   });
@@ -37,10 +58,23 @@ app.get('/:id', (req, res) => {
   let sql = `SELECT * FROM tracker WHERE id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+    if (err) {
+      console.log('MySQL Error: ', err.sqlMessage);
+      return res.sendStatus(503);
+    }
+
     if (results.length > 0) {
 
+      let ip_address = req.headers['x-forwarded-for'];
+
+      if (ip_address) {
+        let list = ip_address.split(',');
+        ip_address = list[list.length-1];
+      } else {
+        ip_address = req.connection.remoteAddress;
+      }
+
       let id = results[0].id;
-      let ip_address = '141.237.9.209';
       let unique_id = shortid.generate();
       let timestamp = moment().format('YYYY-MM-DD HH:mm:ss');
       let user_agent = req.useragent.source;
@@ -90,12 +124,17 @@ app.get('/:id', (req, res) => {
           let original_url = results[0].original_url;
 
           connection.query(sql, (err) => {
+            if (err) {
+              console.log('MySQL Error: ', err.sqlMessage);
+              res.sendStatus(503);
+            }
             res.redirect(original_url);
           });
         });
 
-      }).on("error", (err) => {
-        console.log("Error: " + err.message);
+      }).on('error', (err) => {
+        console.log("HTTP Error: " + err);
+        res.sendStatus(503);
       });
 
     } else {
@@ -109,6 +148,11 @@ app.get('/ip/:id', (req, res) => {
   let sql = `SELECT * FROM ip WHERE unique_id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+    if (err) {
+      console.log('MySQL Error: ', err.sqlMessage);
+      res.sendStatus(503);
+    }
+
     if (results.length > 0) {
       res.json(results[0]);
     } else {
@@ -122,6 +166,11 @@ app.get('/tracker/:id', (req, res) => {
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+    if (err) {
+      console.log('MySQL Error: ', err.sqlMessage);
+      res.sendStatus(503);
+    }
+
     if (results.length > 0) {
       res.json(results[0]);
     } else {
@@ -135,6 +184,11 @@ app.get('/track/:id', (req, res) => {
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+    if (err) {
+      console.log('MySQL Error: ', err.sqlMessage);
+      res.sendStatus(503);
+    }
+
     if (results.length > 0) {
       id = results[0].id;
       sql = `SELECT * FROM ip WHERE id = '${id}'`;
@@ -142,7 +196,13 @@ app.get('/track/:id', (req, res) => {
       let tracker_info = results[0];
 
       connection.query(sql, (err, results, fields) => {
+        if (err) {
+          console.log('MySQL Error: ', err.sqlMessage);
+          res.sendStatus(503);
+        }
+
         let ip_info = results;
+
         res.render('track', {ip_info: ip_info, tracker_info: tracker_info, id: tracker_info.admin_id});
       });
 
@@ -157,8 +217,14 @@ app.get('/delete/:id', (req, res) => {
   let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
 
   connection.query(sql, (err, results, fields) => {
+    if (err) {
+      console.log('MySQL Error: ', err.sqlMessage);
+      res.sendStatus(503);
+    }
+
     if (results.length > 0) {
       let ip_id = results[0].id;
+
       sql = `DELETE FROM ip WHERE id = '${ip_id}'`;
 
       connection.query(sql, (err, results, fields) => {
@@ -183,11 +249,22 @@ app.get('/change/:id', (req, res) => {
       let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
 
       connection.query(sql, (err, results, fields) => {
+        if (err) {
+          console.log('MySQL Error: ', err.sqlMessage);
+          res.sendStatus(503);
+        }
+
         tracking_url = results[0].tracking_url;
+
         if (results.length > 0) {
           sql = `UPDATE tracker SET original_url = '${original_url}' WHERE admin_id = '${id}'`;
 
           connection.query(sql, (err, results, fields) => {
+            if (err) {
+              console.log('MySQL Error: ', err.sqlMessage);
+              res.sendStatus(503);
+            }
+
             res.redirect(tracking_url);
           });
 
@@ -227,7 +304,7 @@ app.post('/create', (req, res) => {
 
       connection.query(sql, (err) => {
         if (err) {
-          console.log('Database error: ', err);
+          console.log('MySQL Error: ', err.sqlMessage);
           res.sendStatus(503);
         } else {
           res.json({
@@ -247,5 +324,9 @@ app.post('/create', (req, res) => {
   }
 });
 
-app.listen(config.port, '0.0.0.0');
-console.log('Serving at port:', config.port);
+app.listen(process.env.PORT || config.port, '0.0.0.0');
+
+figlet('Lean Tracker', {font: 'Small'}, (err, data) => {
+  console.log(data);
+  console.log('Serving at port:', config.port);
+});
