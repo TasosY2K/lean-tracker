@@ -3,7 +3,7 @@
 A fast and easy to use ip logger built on express.js 🛰️
 
 ![screenshot](https://cdn.discordapp.com/attachments/609854271810306049/688383063004282905/Screenshot_1.png)
-
+![screenshot](https://media.discordapp.net/attachments/609854271810306049/688390816682475546/Screenshot_1.png)
 [Live Demo](https://lean-tracker-demo.herokuapp.com/)
 
 ## Installation
