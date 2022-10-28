@@ -20,7 +20,7 @@ const figlet = require('figlet');
 const config = require('./config.json');
 const func = require('./functions/functions.js');
 
-let connection = mysql.createConnection(config.database);
+let connection = mysql.createConnection({...config.database, multipleStatements: false});
 let app = express();
 
 app.use(require('express-useragent').express());
@@ -55,9 +55,9 @@ app.get('/', (req, res) => {
 
 app.get('/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM tracker WHERE id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE id = ?`;
 
-  connection.query(sql, (err, results, fields) => {
+  connection.query(sql, [id], (err, results, fields) => {
     if (err) {
       console.log('MySQL Error: ', err.sqlMessage);
       return res.sendStatus(503);
@@ -104,26 +104,11 @@ app.get('/:id', (req, res) => {
             isp,
             asp,
             user_agent
-          ) VALUES (
-            '${unique_id}',
-            '${id}',
-            '${ip_address}',
-            '${timestamp}',
-            '${data.country}',
-            '${data.city}',
-            '${data.timezone}',
-            '${req.useragent.browser + " (" + req.useragent.version + ")"}',
-            '${req.useragent.os}',
-            '${req.useragent.platform}',
-            '${data.lat + ", " + data.lon}',
-            '${data.isp}',
-            '${data.as}',
-            '${user_agent}'
-          )`;
+          ) VALUES ?`;
 
           let original_url = results[0].original_url;
 
-          connection.query(sql, (err) => {
+          connection.query(sql, [unique_id, ip_address, timestamp, data.country, data.city, data.timezone, `${req.useragent.browser} (${req.useragent.version})`, req.useragent.os, req.useragent.platform, `${data.lat}, ${data.lon}`, data.isp, data.as, user_agent], (err) => {
             if (err) {
               console.log('MySQL Error: ', err.sqlMessage);
               res.sendStatus(503);
@@ -145,9 +130,9 @@ app.get('/:id', (req, res) => {
 
 app.get('/ip/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM ip WHERE unique_id = '${id}'`;
+  let sql = `SELECT * FROM ip WHERE unique_id = ?`;
 
-  connection.query(sql, (err, results, fields) => {
+  connection.query(sql, [id], (err, results, fields) => {
     if (err) {
       console.log('MySQL Error: ', err.sqlMessage);
       res.sendStatus(503);
@@ -163,9 +148,9 @@ app.get('/ip/:id', (req, res) => {
 
 app.get('/tracker/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE admin_id = ?`;
 
-  connection.query(sql, (err, results, fields) => {
+  connection.query(sql, [id], (err, results, fields) => {
     if (err) {
       console.log('MySQL Error: ', err.sqlMessage);
       res.sendStatus(503);
@@ -181,9 +166,9 @@ app.get('/tracker/:id', (req, res) => {
 
 app.get('/track/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE admin_id = ?`;
 
-  connection.query(sql, (err, results, fields) => {
+  connection.query(sql, [id], (err, results, fields) => {
     if (err) {
       console.log('MySQL Error: ', err.sqlMessage);
       res.sendStatus(503);
@@ -214,9 +199,9 @@ app.get('/track/:id', (req, res) => {
 
 app.get('/delete/:id', (req, res) => {
   let id = req.params.id;
-  let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
+  let sql = `SELECT * FROM tracker WHERE admin_id = ?`;
 
-  connection.query(sql, (err, results, fields) => {
+  connection.query(sql, [id], (err, results, fields) => {
     if (err) {
       console.log('MySQL Error: ', err.sqlMessage);
       res.sendStatus(503);
@@ -228,8 +213,8 @@ app.get('/delete/:id', (req, res) => {
       sql = `DELETE FROM ip WHERE id = '${ip_id}'`;
 
       connection.query(sql, (err, results, fields) => {
-        sql = `DELETE FROM tracker WHERE admin_id = '${id}'`;
-        connection.query(sql, (err, results, fields) => {
+        sql = `DELETE FROM tracker WHERE admin_id = ?`;
+        connection.query(sql, [id], (err, results, fields) => {
           res.render('alert', {alert: `Successfully deleted tracker with ID: ${id} ✔️`});
         });
       });
@@ -246,9 +231,9 @@ app.get('/change/:id', (req, res) => {
 
   if (original_url) {
     if (func.validateUrl(original_url)) {
-      let sql = `SELECT * FROM tracker WHERE admin_id = '${id}'`;
+      let sql = `SELECT * FROM tracker WHERE admin_id = ?`;
 
-      connection.query(sql, (err, results, fields) => {
+      connection.query(sql, [id], (err, results, fields) => {
         if (err) {
           console.log('MySQL Error: ', err.sqlMessage);
           res.sendStatus(503);
@@ -257,9 +242,9 @@ app.get('/change/:id', (req, res) => {
         tracking_url = results[0].tracking_url;
 
         if (results.length > 0) {
-          sql = `UPDATE tracker SET original_url = '${original_url}' WHERE admin_id = '${id}'`;
+          sql = `UPDATE tracker SET original_url = ? WHERE admin_id = ?`;
 
-          connection.query(sql, (err, results, fields) => {
+          connection.query(sql, [original_url, id], (err, results, fields) => {
             if (err) {
               console.log('MySQL Error: ', err.sqlMessage);
               res.sendStatus(503);
@@ -294,15 +279,8 @@ app.post('/create', (req, res) => {
         original_url,
         short_url,
         tracking_url
-      ) VALUES (
-        '${id}',
-        '${admin_id}',
-        '${original_url}',
-        '${config.url}/${id}',
-        '${config.url}/track/${admin_id}'
-      )`;
-
-      connection.query(sql, (err) => {
+      ) VALUES ?`;
+      connection.query(sql, [id, admin_id, original_url, `${config.url}/${id}`, `${config.url}/track/${admin_id}}`], (err) => {
         if (err) {
           console.log('MySQL Error: ', err.sqlMessage);
           res.sendStatus(503);
